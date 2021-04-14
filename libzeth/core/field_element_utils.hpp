@@ -69,6 +69,9 @@ void field_element_write_bytes(const FieldT &el, std::ostream &out_s);
 template<typename FieldT>
 void field_element_read_bytes(FieldT &el, std::istream &in_s);
 
+template<typename FieldT>
+void field_element_write_decimal(const FieldT &el, std::ostream &out_s);
+
 } // namespace libzeth
 
 #include "libzeth/core/field_element_utils.tcc"
