@@ -3,6 +3,22 @@
 # All functions expect to be executed the root directory of the repository, and
 # will exit with this as the current directory.
 
+
+# Init some global variables related to the platform. Some other functions may
+# expect this to be called before they invoked.
+function init_platform() {
+    platform=`uname`
+    echo platform=${platform}
+}
+
+# Assert that init_platform has been called
+function assert_init_platform() {
+    if [ "" == "${platform}" ] ; then
+        echo init_platform has not been called
+        exit 1
+    fi
+}
+
 # Launch a server in the background and wait for it to be ready, recording the
 # pid in a file.
 #
@@ -48,6 +64,8 @@ function server_stop() {
 #
 
 function ganache_setup() {
+    assert_init_platform
+
     if [ "${platform}" == "Linux" ] ; then
         if (which apk) ; then
             apk add --update npm
@@ -124,6 +142,8 @@ function prover_server_stop() {
 #
 
 function cpp_build_setup() {
+    assert_init_platform
+
     # Extra deps for native builds
 
     if [ "${platform}" == "Darwin" ] ; then
