@@ -7,6 +7,7 @@
 from __future__ import annotations
 from zeth.core.utils import EtherValue
 from zeth.core.constants import SOL_COMPILER_VERSION
+from zeth.helper.klay_send import EstimateComputationCost
 from web3.utils.contracts import find_matching_event_abi  # type: ignore
 from web3.utils.events import get_event_data  # type: ignore
 from eth_utils import event_abi_to_log_topic  # type: ignore
@@ -156,7 +157,12 @@ def send_contract_call(
         return web3.eth.sendRawTransaction(signed_tx.rawTransaction)
 
     # Hosted path
-    return call.transact(tx_desc)
+    transaction = call.buildTransaction(tx_desc)
+    txHash = call.transact(tx_desc)
+    if transaction['to'] != b'':
+        receipt = web3.eth.waitForTransactionReceipt(txHash)
+        print('gasUsed: ', receipt.gasUsed, 'block: ', receipt.blockNumber)
+    return txHash
 
 
 def local_contract_call(

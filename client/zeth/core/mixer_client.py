@@ -27,6 +27,7 @@ from zeth.api.zeth_messages_pb2 import ZethNote, JoinsplitInput, ProofInputs
 
 import os
 import json
+import time
 from Crypto import Random
 from hashlib import blake2s, sha256
 import traceback
@@ -396,6 +397,7 @@ class MixerClient:
             sender_eth_private_key,
             tx_value,
             call_gas)
+        print("txHash: ", tx_hash.hex())
         return tx_hash.hex()
 
     def mix_call(
@@ -580,6 +582,7 @@ class MixerClient:
         the signature.
         """
         # Generate prover inputs and signing key
+        start = time.time()
         mix_call_desc = MixCallDescription(
             mk_tree,
             sender_ownership_keypair,
@@ -603,7 +606,8 @@ class MixerClient:
             public_data,
             sender_eth_address,
             for_dispatch_call)
-
+        end = time.time()
+        print('Proof generation time: ', end-start, 'second.')
         return mix_params, signing_keypair
 
 
