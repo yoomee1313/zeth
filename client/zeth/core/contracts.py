@@ -7,7 +7,6 @@
 from __future__ import annotations
 from zeth.core.utils import EtherValue
 from zeth.core.constants import SOL_COMPILER_VERSION
-from zeth.helper.klay_send import EstimateComputationCost
 from web3.utils.contracts import find_matching_event_abi  # type: ignore
 from web3.utils.events import get_event_data  # type: ignore
 from eth_utils import event_abi_to_log_topic  # type: ignore
